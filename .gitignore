@@ -1,0 +1,26 @@
+# Entornos virtuales
+env/
+venv/
+.env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Variables de entorno y secretos (¡CRÍTICO PARA TU SEGURIDAD!)
+.env
+.env.local
+.env.*
+
+# Base de datos SQLite local (Se creará sola con init_db y seed_db)
+*.db
+*.sqlite3
+consultorio_django.db
+
+# Archivos de caché de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Archivos temporales de Streamlit
+.streamlit/
