@@ -1,8 +1,8 @@
 # Consul - Asistente Administrativo con IA
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://consul-dyoq3djxeysrm8dzmhgjek.streamlit.app)
 
 Sistema inteligente de consulta de base de datos para la gestión administrativa de un consultorio psicológico. Este proyecto utiliza agentes de Inteligencia Artificial para traducir preguntas en lenguaje natural a consultas SQL, permitiendo a los administradores extraer información sin necesidad de conocimientos técnicos.
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://consul-dyoq3djxeysrm8dzmhgjek.streamlit.app)
 
 ## 🚀 Características Principales
 
