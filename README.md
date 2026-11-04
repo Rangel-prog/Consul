@@ -1,68 +1,45 @@
-Asistente de Consultorio Médico (AI Agent)
+# Consul - Asistente Administrativo con IA
 
-Este proyecto es un asistente virtual basado en Inteligencia Artificial diseñado para un entorno clínico. Utiliza Streamlit para la interfaz de usuario y el modelo Gemini 3.6 Flash a través del SDK google-genai como motor del agente conversacional.
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://consul-dyoq3djxeysrm8dzmhgjek.streamlit.app)
 
-El sistema está diseñado con un enfoque estricto en la seguridad de los datos y la ética médica, permitiendo interactuar en lenguaje natural con la agenda del consultorio sin emitir diagnósticos médicos automatizados.
+Sistema inteligente de consulta de base de datos para la gestión administrativa de un consultorio psicológico. Este proyecto utiliza agentes de Inteligencia Artificial para traducir preguntas en lenguaje natural a consultas SQL, permitiendo a los administradores extraer información sin necesidad de conocimientos técnicos.
 
-🚀 Características Principales
+## 🚀 Características Principales
 
-Interfaz Conversacional: Construida con Streamlit, permite al personal interactuar fácilmente mediante un chat, incluyendo preguntas sugeridas y un modo de depuración (verbose) para ver el razonamiento del modelo.
+* **Consultas en Lenguaje Natural:** Integración con Google Gemini API para interpretar intenciones y consultar la base de datos de manera dinámica.
+* **Seguridad por Diseño (Read-Only):** El agente está restringido estrictamente a operaciones SELECT en la base de datos SQLite para garantizar la integridad de los registros.
+* **Frontera de Responsabilidad Médica:** Arquitectura con "system prompts" estrictos que bloquean cualquier intento de generar diagnósticos médicos o psicológicos, limitando la IA a tareas puramente administrativas.
+* **Interfaz Profesional:** Construido con Streamlit para ofrecer un entorno de chat limpio, responsivo y fácil de usar.
 
-Agente de IA Seguro: Configurado con instrucciones estrictas para manejar únicamente datos administrativos (agenda, precios, disponibilidad, contacto). Nunca asume ni inventa información clínica.
+## 🛠️ Stack Tecnológico
 
-Acceso de Solo Lectura y Auto-reparación: Las operaciones en la base de datos están restringidas a sentencias SELECT. Si el agente comete un error de sintaxis SQL, es capaz de leer el error y corregir su propia consulta automáticamente.
+* **Lenguaje:** Python 3.14+
+* **Frontend:** Streamlit
+* **Base de Datos:** SQLite3
+* **Inteligencia Artificial:** Google GenAI SDK (Gemini 1.5 Flash)
 
-Base de Datos Relacional: Utiliza SQLite (consultorio_django.db) con un esquema robusto para gestionar Pacientes, Terapeutas, Consultorios y Citas.
+## 💻 Ejecución Local
 
-📂 Estructura del Proyecto
+Si deseas correr este proyecto en tu propia máquina, sigue estos pasos:
 
-app.py: Archivo principal que ejecuta la interfaz gráfica con Streamlit y maneja el estado de la conversación.
+1. **Clona el repositorio:**
+    git clone https://github.com/Rangel-prog/Consul.git
+    cd Consul
 
-agent.py: Contiene la lógica del agente de IA, la configuración del cliente genai, el prompt del sistema y la lógica de invocación de herramientas (Function Calling) con reintentos automáticos.
+2. **Instala las dependencias:**
+    pip install -r requirements.txt
 
-database.py: Define el esquema de la base de datos SQLite y contiene scripts para inicializar (init_db) y poblar (seed_db) las tablas con datos de prueba.
+3. **Configura tus credenciales:**
+    Crea una carpeta .streamlit en la raíz del proyecto y dentro un archivo secrets.toml con tu API Key de Google:
+    GEMINI_API_KEY="AIzaSy_TU_CLAVE_AQUI"
 
-tools.py: (Módulo de soporte) Contiene las funciones get_database_schema y execute_sql_query que el agente de IA utiliza para interactuar con la base de datos.
+4. **Inicia la aplicación:**
+    streamlit run app.py
 
-.env: Archivo de configuración local para las variables de entorno.
+## ⚠️ Consideraciones de Despliegue (Rate Limits)
 
-🛠️ Instalación y Uso
+El asistente de este proyecto utiliza un agente inteligente que realiza múltiples llamadas iterativas (Tool Calling) a la base de datos SQLite para inspeccionar el esquema, razonar la consulta y generar una respuesta precisa.
 
-Clonar el repositorio y navegar a la carpeta del proyecto.
+Debido a esta arquitectura, si se utiliza una API Key de la capa gratuita (Free Tier) de Google Gemini, es probable alcanzar el límite estricto de **5 peticiones por minuto**, lo que resultará en un error temporal 429 RESOURCE_EXHAUSTED en la interfaz.
 
-Crear y activar un entorno virtual:
-
-En Windows: python -m venv env y luego env\Scripts\activate
-
-En macOS/Linux: python3 -m venv env y luego source env/bin/activate
-
-Instalar las dependencias:
-Asegúrate de instalar los paquetes necesarios que utiliza el proyecto:
-
-pip install streamlit python-dotenv google-genai
-
-
-Configurar las variables de entorno:
-Crea un archivo llamado .env en la raíz del proyecto y agrega tu clave de la API de Google Gemini:
-
-GEMINI_API_KEY=tu_clave_api_aqui
-
-
-Inicializar la base de datos (Opcional, se hace automático):
-La aplicación está configurada para crear y poblar la base de datos automáticamente al iniciar si no existe. También puedes hacerlo manualmente:
-
-python database.py
-
-
-Ejecutar la aplicación:
-
-streamlit run app.py
-
-
-⚠️ Notas de Seguridad y Limitaciones
-
-Este software es una herramienta administrativa. No debe utilizarse para autodiagnóstico ni como reemplazo del criterio médico profesional.
-
-La base de datos actual (SQLite) está configurada para demostración/uso local.
-
-Las sentencias de escritura (INSERT, UPDATE, DELETE, DROP) están estrictamente bloqueadas a nivel de prompt y se recomienda reforzarlas a nivel de la herramienta execute_sql_query en producción.
+**Para evaluadores:** Si experimentas este límite durante las pruebas en el despliegue público, por favor permite que transcurra 1 minuto entre cada consulta. Para un uso fluido y sin restricciones, se requiere ejecutar el proyecto localmente inyectando una API Key vinculada a una cuenta con facturación habilitada (ej. Google AI Plus).
